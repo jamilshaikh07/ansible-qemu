@@ -21,7 +21,7 @@
       shell:
         cmd: cloud-localds /virt/vms/{{ vmname }}/{{ vmname }}-cloud-config.img /virt/vms/{{ vmname }}/cloud-config.yml
 
-    - name: "Provision Virtual Machine disk"
+    - name: "{{ vmname }} Provision Virtual Machine disk"
       copy:
         src: /virt/images/bionic-server-cloudimg-amd64.qcow2 
         dest: /virt/vms/{{ vmname }}/{{ vmname }}.qcow2
