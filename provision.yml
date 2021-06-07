@@ -11,15 +11,15 @@
     - name:  copy cloud config
       template:
         src: cloud-config.j2
-        dest: /virt/vms/cloud-config.yml
+        dest: /virt/vms/{{ vmname }}/cloud-config.yml
   
     - name: set hostname
       shell:
-         cmd: echo {{ vmname }} >> /virt/vms/cloud-config.yml
+         cmd: sed -i 's/hostname:.*/& {{ vmname }}/g' /virt/vms/{{ vmname }}/cloud-config.yml
          
     - name: generate cloud config img
       shell:
-        cmd: cloud-localds /virt/vms/{{ vmname }}/{{ vmname }}-cloud-config.img /virt/vms/cloud-config.yml
+        cmd: cloud-localds /virt/vms/{{ vmname }}/{{ vmname }}-cloud-config.img /virt/vms/{{ vmname }}/cloud-config.yml
 
     - name: "Provision Virtual Machine disk"
       copy:
