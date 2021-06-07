@@ -1,0 +1,32 @@
+---
+- hosts: all
+  become: true
+  tasks: 
+
+# Create Qemu directory
+  - name: Qemu images directory
+    file:
+      state: directory
+      path: /virt/images
+
+#download the ubuntu image to the cloud image directory
+  - name: Check Ubuntu 18.04 cloud image
+    get_url:
+      url: https://cloud-images.ubuntu.com/bionic/current/bionic-server-cloudimg-amd64.img
+      dest: /virt/images/bionic-server-cloudimg-amd64.img
+
+# convert the img file to qcow2  
+  - name: Convert cloud image qcow format
+    shell:
+      chdir: /virt/images/
+      cmd: qemu-img convert -f qcow2 bionic-server-cloudimg-amd64.img bionic-server-cloudimg-amd64.qcow2
+      creates: /virt/images/bionic-server-cloudimg-amd64.qcow2
+
+# VM Directory
+  - name: Virtual machine directory
+    file:
+      path: /virt/vms
+      state: directory
+      owner: root
+      group: root
+      mode: 0755
